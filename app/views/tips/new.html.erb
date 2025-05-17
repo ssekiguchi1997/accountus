@@ -1,0 +1,8 @@
+<h1>Tips紹介</h1>
+<%= form_with model: @tip do |f| %>
+  <h3>Tipsタイトル</h3>
+  <%= f.text_field :title %>
+  <h3>Tips詳細</h3>
+  <%= f.text_area :detail %></br>
+  <%= f.submit '投稿' %>
+<% end %>

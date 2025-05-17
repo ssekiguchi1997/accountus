@@ -1,0 +1,10 @@
+<% @tips.each do |tip| %>
+  <div>
+    <p>タイトル :</p>
+    <%= link_to tip_path(tip.id) do %>
+    <p><%= tip.title %></P>
+    <% end %>
+    <p> 詳細 : <%= tip.detail %></p>
+    <p>ユーザーネーム : <%= tip.user.name %></p>
+  </div>
+<% end %>
