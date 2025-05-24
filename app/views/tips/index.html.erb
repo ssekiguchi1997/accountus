@@ -1,3 +1,11 @@
+
+
+<% flash.each do |key, message| %>
+  <div class="flash <%= key %>"><%= message %></div>
+<% end %>
+
+<h1>投稿一覧</h1>
+
 <% @tips.each do |tip| %>
   <div>
     <p>タイトル :</p>
@@ -6,5 +14,6 @@
     <% end %>
     <p> 詳細 : <%= tip.detail %></p>
     <p>ユーザーネーム : <%= tip.user.name %></p>
+    <p><%= link_to "#{tip.post_comments.count} コメント", tip_path(tip.id) %></p>
   </div>
 <% end %>

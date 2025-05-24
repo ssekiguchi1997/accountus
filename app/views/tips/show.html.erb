@@ -1,11 +1,43 @@
+<% if flash[:notice] %>
+  <p class="notice"><%= flash[:notice] %></p>
+<% end %>
+
 <div>
-  <p> タイトル : <%= @tip.title %></P>
+  <p> タイトル : <%= @tip.title %></p>
   <p> 詳細 : <%= @tip.detail %></p>
   <p>ユーザーネーム : <%= link_to @tip.user.name, user_path(@tip.user.id) %>
   </p>
   <p>投稿日 : <%= @tip.created_at.strftime('%Y/%m/%d') %></p>
   <% if @tip.user == current_user %>
-    <%= link_to "編集", edit_tip_path(@tip.id) %>
-    <%= button_to "削除", tip_path(@tip.id), method: :delete, data: { turbo: false, confirm: '本当に削除しますか？' } %>
+    <%= link_to "編集", edit_tip_path(@tip.id) %>|
+    <%= link_to "削除", tip_path(@tip), method: :delete, data: { confirm: "本当に削除しますか？"} %>
   <% end %>
+</div>
+
+<% if @tip.favorited_by?(current_user) %>
+  <p>
+    <%= button_to "♥#{@tip.favorites.count} いいね", tip_favorite_path(@tip), method: :delete, data: { turbo: false } %>
+  </p>
+<% else %>
+  <p>
+    <%= button_to "♥#{@tip.favorites.count} いいね", tip_favorite_path(@tip), method: :post, data: { turbo: false } %>
+  </p>
+<% end %>
+
+
+<div>
+<p>コメント件数：<%= @tip.post_comments.count %></p>
+<% @tip.post_comments.each do |post_comment| %>
+  <%= post_comment.user.name %>
+  <%= post_comment.created_at.strftime('%Y/%m/%d') %><%= post_comment.comment %>
+  <% if post_comment.user == current_user %>
+    <%= button_to "削除", tip_post_comment_path(post_comment.tip, post_comment), method: :delete, data: { turbo: false, confirm: '本当に削除しますか？' } %>
+  <% end %>
+<% end %>
+</div>
+<div>
+<%= form_with model: [@tip, @post_comment] do |f| %>
+  <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+  <%= f.submit "送信する" %>
+<% end %>
 </div>

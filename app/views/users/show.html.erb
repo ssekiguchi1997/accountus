@@ -10,6 +10,7 @@
     <% @user.tips.each do |tip| %>
       <li>
         <%= link_to tip.title, tip_path(tip) %>
+         <p><%= link_to "#{tip.post_comments.count} コメント", tip_path(tip.id) %></p>
       </li>
     <% end %>
   </ul>

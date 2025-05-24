@@ -19,6 +19,7 @@ class TipsController < ApplicationController
 
   def show
     @tip = Tip.find(params[:id])
+    @post_comment = PostComment.new
   end
 
   def edit
