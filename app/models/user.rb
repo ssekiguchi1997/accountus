@@ -7,4 +7,12 @@ class User < ApplicationRecord
   has_many :tips
   has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+
+  def self.search_for(content, method)
+    if method == 'perfect'
+      User.where(name: content)
+    else
+      User.where('name LIKE ?', '%' + content + '%')
+    end
+  end
 end

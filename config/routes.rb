@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
+  get "search" => "searches#search"
   
   root to: "homes#top"
   
@@ -15,7 +16,8 @@ Rails.application.routes.draw do
     resource :favorite, only: [:create, :destroy]
   end
 
-  resources :users, only: [:show, :edit, :update]
+  resources :users, only: [:show, :edit, :update, :destroy] do
+  end
   
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

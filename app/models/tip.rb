@@ -9,4 +9,11 @@ class Tip < ApplicationRecord
     favorites.exists?(user_id: user.id)
   end
 
+  def self.search_for(content, method)
+    if method == 'perfect'
+      Tip.where(title: content)
+    else
+      Tip.where('title LIKE ?', '%' + content + '%')
+    end
+  end
 end

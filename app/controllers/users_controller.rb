@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     if @user.id != current_user.id
       redirect_to user_path(current_user)
     end
-    @tip = Tip.find(params[:id])
+    @tip = Tip.find(params[:tip_id])
   end
 
   def update
@@ -18,6 +18,16 @@ class UsersController < ApplicationController
       redirect_to user_path(@user), notice: "User was successfully updated."
     else
       render :edit
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    if @user.id == current_user.id
+      @user.destroy
+      redirect_to new_user_registration_path, notice: "User was successfully deleted."
+    else
+      redirect_to user_path(current_user), alert: "You can only delete your own account."
     end
   end
 

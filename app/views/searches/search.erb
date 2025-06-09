@@ -1,0 +1,9 @@
+<% if @model == 'user' %>
+	<h3>Users search for "<%= @content %>"</h3>
+  <%= render 'users/index', users: @records %>
+<% elsif @model == 'tip' %>
+	<h3>Tips search for "<%= @content %>"</h3>
+  <%= render 'tips/index', tips: @records %>
+<% else %>
+  <p>検索結果が見つかりませんでした。</p>
+<% end %>
