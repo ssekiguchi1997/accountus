@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
   get "search" => "searches#search"
+  devise_for :admin, skip: [:registrations, :password], controllers: {
+    sessions: 'admin/sessions',
+  }
   
   root to: "homes#top"
   
