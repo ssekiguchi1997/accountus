@@ -1,0 +1,100 @@
+<div class="container px-5 px-sm-0 mt-4">
+  <div class= "row">
+    <div class="col-md-3">
+      <h2>User Info</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th><%= current_user.name %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Job</td>
+              <td><%= current_user.job %></td>
+            </tr>
+          </tbody>
+        </table>
+      <div class="row justify-content-center mt-4">
+        <%= link_to '<i class="fa-solid fa-user-gear"></i>'.html_safe, edit_user_path(current_user), class: "btn-wrapper col-10 nav-link text-dark text-center border border-dark rounded" %>
+      </div><br>
+    <div class="row">
+      <h2>Tips投稿</h2>
+    </div>
+    <div class="row col-md-12">
+      <%= form_with model: @tip, url: tips_path, local: true do |f| %>
+        <h4>タイトル</h4>
+        <%= f.text_field :title, class: "form-control" %></br>
+        <h4>詳細</h4>
+        <%= f.text_area :detail, rows: '4', class: "form-control" %></br>
+        <%= f.submit "Create Tip", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+
+<div class="col-md-8 offset-md-1">
+
+<div>
+  <h3><%= @user.name %>さんのプロフィール</h3>
+</div>
+<table class="table table-bordered table-hover shadow-sm bg-white rounded">
+  <colgroup>
+    <col style="width: 20%;">
+    <col style="width: 30%;">
+    <col style="width: 50%;">
+  </colgroup>
+  <thead class="table-dark text-center">
+    <tr>
+      <th>ユーザーネーム</th>
+      <th>職業</th>
+      <th>キャリア</th>
+      </tr>
+  </thead>
+  <tbody class="text-center align-middle">
+  <tr>
+    <td><%= @user.name %></td>
+    <td><%= @user.job.presence || "未登録" %></td>
+    <td><%= @user.career.presence || "未登録" %></td>
+  </tr>
+  </tbody>
+</table>
+<% if @user == current_user %>
+  <%= link_to "プロフィールを編集する", edit_user_path(@user.id) %></br>
+  <%= link_to "アカウントを削除する", user_path(@user.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+<% end %>
+<div class="mt-5">
+  <% if @tips.any? %>
+    <h4><%= @user.name %>さんの投稿一覧</h4>
+      <table class="table table-striped">
+　      <colgroup>
+          <col style="width: 15%;">
+          <col style="width: 30%;">
+          <col style="width: 40%;">
+          <col style="width: 15%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>ユーザーネーム</th>
+            <th>タイトル</th>
+            <th>詳細</th>
+            <th>コメント数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tips.each do |tip| %>
+            <tr>
+              <td><%= tip.user.name %></td>
+              <td><%= link_to tip.title, tip_path(tip.id) %></td>
+              <td><%= tip.detail %></td>
+              <td><%= link_to "#{tip.post_comments.count} コメント", tip_path(tip.id) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @tips %>
+  <% else %>
+    <p>投稿はありません</p>
+  <% end %>
+</div>
+

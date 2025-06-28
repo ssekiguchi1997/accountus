@@ -1,7 +1,8 @@
-class UsersController < ApplicationController
+class Public::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
-    @tips = @user.tips
+    @tips = @user.tips.includes(:user, :post_comments).order(created_at: :desc).page(params[:page]).per(10)
+    @tip = Tip.new
   end
 
   def edit
@@ -9,7 +10,7 @@ class UsersController < ApplicationController
     if @user.id != current_user.id
       redirect_to user_path(current_user)
     end
-    @tip = Tip.find(params[:tip_id])
+    @tip = Tip.find(params[:id])
   end
 
   def update

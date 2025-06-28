@@ -1,0 +1,49 @@
+<% if @tip.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@tip.errors.count, "error") %> prohibited this tip from being saved:</h2>
+
+      <ul>
+        <% @tip.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="container px-5 px-sm-0 mt-4">
+  <div class= "row">
+    <div class="col-md-3">
+      <h2>User Info</h2>
+        <table class="table">
+          <thread>
+            <tr>
+              <th>Name</th>
+              <th><%= current_user.name %></th>
+            </tr>
+          </thread>
+          <tbody>
+            <tr>
+              <td>Job</td>
+              <td><%= current_user.job %></td>
+            </tr>
+          </tbody>
+        </table>
+      <div class="row justify-content-center mt-4">
+        <%= link_to '<i class="fa-solid fa-user-gear"></i>'.html_safe, edit_user_path(current_user), class: "btn-wrapper col-10 nav-link text-dark text-center border border-dark rounded" %>
+      </div><br>
+  </div>
+
+
+
+<div class="col-md-8 offset-md-1">
+
+<h1>Tips紹介</h1>
+<p>Tipsを投稿することで、他のユーザーと情報を共有できます。</p>
+<%= form_with model: @tip do |f| %>
+  <h3>Tipsタイトル</h3>
+  <%= f.text_field :title, class: "col-7" %>
+  <div class="mt-4"></div>
+  <h3>Tips詳細</h3>
+  <%= f.text_area :detail,rows: '4', class: "col-7" %></br>
+  <%= f.submit '投稿', class: "btn btn-success mt-2" %>
+<% end %>

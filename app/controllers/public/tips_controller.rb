@@ -1,4 +1,4 @@
-class TipsController < ApplicationController
+class Public::TipsController < ApplicationController
   def new
     @tip = Tip.new
   end
@@ -14,16 +14,19 @@ class TipsController < ApplicationController
   end
 
   def index
-    @tips = Tip.all
+    @tips = Tip.includes(:user, :post_comments).order(created_at: :desc).page(params[:page]).per(10)
+    @tip = Tip.new
   end
 
   def show
     @tip = Tip.find(params[:id])
+    @tip_form = Tip.new
     @post_comment = PostComment.new
   end
 
   def edit
     @tip = Tip.find(params[:id])
+    @tip_form = Tip.new
     if @tip.user != current_user
       redirect_to tips_path, alert: "You are not authorized to edit this tips."
     end

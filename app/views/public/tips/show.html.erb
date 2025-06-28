@@ -1,0 +1,89 @@
+<% if flash[:notice] %>
+  <p class="notice"><%= flash[:notice] %></p>
+<% end %>
+
+<div class="container px-5 px-sm-0 mt-4">
+  <div class= "row">
+    <div class="col-md-3">
+      <h2>User Info</h2>
+        <table class="table">
+          <thread>
+            <tr>
+              <th>Name</th>
+              <th><%= current_user.name %></th>
+            </tr>
+          </thread>
+          <tbody>
+            <tr>
+              <td>Job</td>
+              <td><%= current_user.job %></td>
+            </tr>
+          </tbody>
+        </table>
+      <div class="row justify-content-center mt-4">
+        <%= link_to '<i class="fa-solid fa-user-gear"></i>'.html_safe, edit_user_path(current_user), class: "btn-wrapper col-10 nav-link text-dark text-center border border-dark rounded" %>
+      </div><br>
+    <div class="row">
+      <h2>Tips投稿</h2>
+    </div>
+    <div class="row col-md-12">
+      <%= form_with model: @tip_form, method: :post do |f| %>
+        <h4>タイトル</h4>
+        <%= f.text_field :title, class: "form-control" %></br>
+        <h4>詳細</h4>
+        <%= f.text_area :detail, rows: '4', class: "form-control" %></br>
+        <%= f.submit "Create Tip", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+
+
+
+<div class="col-md-8 offset-md-1">
+
+<div class="tip-detail mb-4 p-3 border rounded">
+  <p><strong>ユーザーネーム:</strong> <%= link_to @tip.user.name, user_path(@tip.user.id) %></p>
+  <p><strong>タイトル:</strong> <%= @tip.title %></p>
+  <p><strong>詳細:</strong> <%= @tip.detail %></p>
+  <p><strong>投稿日:</strong> <%= @tip.created_at.strftime('%Y/%m/%d') %></p>
+
+  <% if @tip.user == current_user %>
+    <p>
+      <%= link_to "編集", edit_tip_path(@tip), class: "btn btn-sm btn-outline-primary me-2" %>
+      <%= link_to "削除", tip_path(@tip), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-sm btn-outline-danger" %>
+    </p>
+  <% end %>
+  <p>
+    <% if @tip.favorited_by?(current_user) %>
+      <%= button_to "♥#{@tip.favorites.count} いいね", tip_favorite_path(@tip), method: :delete, data: { turbo: false }, class: "btn btn-danger" %>
+    <% else %>
+      <%= button_to "♥#{@tip.favorites.count} いいね", tip_favorite_path(@tip), method: :post, data: { turbo: false }, class: "btn btn-outline-danger" %>
+    <% end %>
+  </p>
+</div>
+
+<div class="comments-section">
+  <h5>コメント（<%= @tip.post_comments.count %>件）</h5>
+
+  <% @tip.post_comments.each do |post_comment| %>
+    <div class="comment mb-3 p-2 border rounded">
+      <div class="d-flex justify-content-between">
+        <span><strong><%= post_comment.user.name %></strong></span>
+        <span class="text-muted"><%= post_comment.created_at.strftime('%Y/%m/%d') %></span>
+      </div>
+      <p><%= post_comment.comment %></p>
+      <% if post_comment.user == current_user %>
+        <%= button_to "削除", tip_post_comment_path(post_comment.tip, post_comment), method: :delete, data: { turbo: false, confirm: '本当に削除しますか？' }, class: "btn btn-sm btn-outline-danger" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="comment-form mt-4">
+  <%= form_with model: [@tip, @post_comment], local: true do |f| %>
+    <div class="mb-2">
+      <%= f.text_area :comment, rows: 2, placeholder: "コメントをここに", class: "form-control" %>
+    </div>
+    <%= f.submit "送信する", class: "btn btn-primary" %>
+  <% end %>
+</div>

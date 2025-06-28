@@ -1,4 +1,4 @@
-class PostCommentsController < ApplicationController
+class Public::PostCommentsController < ApplicationController
 
   def create
     tip = Tip.find(params[:tip_id])

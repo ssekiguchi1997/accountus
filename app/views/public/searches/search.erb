@@ -1,0 +1,36 @@
+<div class="search-results mt-4">
+  <% if @model == 'user' %>
+    <h4 class="mb-3">ユーザーの検索結果: "<%= @content %>"</h4>
+    <% if @records.any? %>
+      <ul class="list-group">
+        <% @records.each do |user| %>
+          <li class="list-group-item">
+            <%= link_to user.name, user_path(user), class: "text-decoration-none" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">該当するユーザーが見つかりませんでした。</p>
+    <% end %>
+
+  <% elsif @model == 'tip' %>
+    <h4 class="mb-3">投稿の検索結果: "<%= @content %>"</h4>
+    <% if @records.any? %>
+      <ul class="list-group">
+        <% @records.each do |tip| %>
+          <li class="list-group-item">
+            <%= link_to tip.title, tip_path(tip), class: "text-decoration-none" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">該当する投稿が見つかりませんでした。</p>
+    <% end %>
+
+  <% else %>
+    <p class="text-muted">無効な検索モデルが指定されました。</p>
+  <% end %>
+</div>
+<div class="mt-3">
+  <%= paginate @records %>
+</div>
