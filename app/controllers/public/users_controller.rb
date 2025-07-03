@@ -10,7 +10,6 @@ class Public::UsersController < ApplicationController
     if @user.id != current_user.id
       redirect_to user_path(current_user)
     end
-    @tip = Tip.find(params[:id])
   end
 
   def update
