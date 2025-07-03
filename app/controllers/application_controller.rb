@@ -8,9 +8,10 @@ class ApplicationController < ActionController::Base
     if admin_controller?
       authenticate_admin!
     else
-      authenticate_user! unless action_is_public?
+      authenticate_user! unless action_is_public? || admin_signed_in?
     end
   end
+  
 
   def admin_controller?
     self.class.module_parent_name == 'Admin'
