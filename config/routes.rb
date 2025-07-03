@@ -1,20 +1,21 @@
 Rails.application.routes.draw do
 
-  scope module: :public do
-    devise_for :users
-    root to: "homes#top"
-    get '/about' => "homes#about" , as: :about
-    resources :tips, only: [:new, :create, :index, :show, :edit, :destroy, :update] do
-      resources :post_comments, only: [:create, :destroy]
-      resource :favorite, only: [:create, :destroy]
+    scope module: :public do
+      devise_for :users, controllers: {
+        sessions: 'public/sessions'
+      }
+  
+      root to: "homes#top"
+      get '/about', to: "homes#about", as: :about
+  
+      resources :tips, only: [:new, :create, :index, :show, :edit, :destroy, :update] do
+        resources :post_comments, only: [:create, :destroy]
+        resource :favorite, only: [:create, :destroy]
+      end
+  
+      resources :users, only: [:new, :create, :show, :edit, :update, :destroy]
     end
-    resources :users, only: [:new, :create, :show, :edit, :update, :destroy] do
-    end
-  end
-
-  devise_scope :user do
-    get '/users/sign_out' => 'devise/sessions#destroy'
-  end
+  
 
   devise_for :admin, skip: [:registrations, :password], controllers: {
     sessions: 'admin/sessions',
