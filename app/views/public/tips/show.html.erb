@@ -42,7 +42,7 @@
 <div class="col-md-8 offset-md-1">
 
 <div class="tip-detail mb-4 p-3 border rounded">
-  <p><strong>ユーザーネーム:</strong> <%= link_to @tip.user.name, user_path(@tip.user.id) %></p>
+  <p><strong>ユーザーネーム:</strong> <%= link_to @tip.user.name.presence || "未登録", user_path(@tip.user.id) %></p>
   <p><strong>タイトル:</strong> <%= @tip.title %></p>
   <p><strong>詳細:</strong> <%= @tip.detail %></p>
   <p><strong>投稿日:</strong> <%= @tip.created_at.strftime('%Y/%m/%d') %></p>
