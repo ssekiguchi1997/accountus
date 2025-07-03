@@ -18,13 +18,13 @@
           <thread>
             <tr>
               <th>Name</th>
-              <th><%= current_user.name %></th>
+              <th><%= current_user.name.presence || "未登録" %></th>
             </tr>
           </thread>
           <tbody>
             <tr>
               <td>Job</td>
-              <td><%= current_user.job %></td>
+              <td><%= current_user.job.presence || "未登録" %></td>
             </tr>
           </tbody>
         </table>
